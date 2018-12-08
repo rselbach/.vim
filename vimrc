@@ -592,3 +592,8 @@ autocmd BufWritePre * if index(blacklist, &ft) < 0 | StripWhitespace
 let g:ale_linters = {'go': [ 'gobuild', 'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace', 'gometalinter' ]}
 let g:ale_go_gometalinter_options = '--fast'
 let g:ale_lint_on_enter = 'always'
+
+
+" tagbar
+nmap <leader>tt :TagbarOpenAutoClose<cr>
+imap <leader>tt <esc>:TagbarOpenAutoClose<cr>
