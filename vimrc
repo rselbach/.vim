@@ -495,14 +495,14 @@ au FileType go nmap <Leader>d <Plug>(go-doc)
 
 au FileType go nmap <Leader>e <Plug>(go-rename)
 
-" autoclose parentheses for code
-autocmd FileType c,go,py inoremap " ""<left>
-autocmd FileType c,go,py inoremap ' ''<left>
-autocmd filetype c,go,py inoremap ( ()<left>
-autocmd filetype c,go,py inoremap [ []<left>
-autocmd filetype c,go,py inoremap { {}<left>
-autocmd filetype c,go,py inoremap {<CR> {<CR>}<ESC>O
-autocmd filetype c,go,py inoremap {;<CR> {<CR>};<ESC>O
+"" autoclose parentheses for code
+"autocmd FileType c,go,py inoremap " ""<left>
+"autocmd FileType c,go,py inoremap ' ''<left>
+"autocmd filetype c,go,py inoremap ( ()<left>
+"autocmd filetype c,go,py inoremap [ []<left>
+"autocmd filetype c,go,py inoremap { {}<left>
+"autocmd filetype c,go,py inoremap {<CR> {<CR>}<ESC>O
+"autocmd filetype c,go,py inoremap {;<CR> {<CR>};<ESC>O
 
 " neovim specific
 if has('nvim')
