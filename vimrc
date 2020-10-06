@@ -2,32 +2,42 @@ if has("nvim")
    set runtimepath^=~/.vim runtimepath+=~/.vim/after
    let &packpath = &runtimepath
 endif
+
 " load plugins
 "  install vim-plug
 "  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 "    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 call plug#begin('~/.vim/plugged')
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'preservim/nerdtree'
+Plug 'Lokaltog/vim-powerline'
+Plug 'xolox/vim-notes'
+Plug 'xolox/vim-misc'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() }}
+Plug 'junegunn/fzf.vim'
+
 Plug 'airblade/vim-gitgutter'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'godlygeek/tabular'
-Plug 'kien/ctrlp.vim'
-Plug 'majutsushi/tagbar'
-Plug 'mhinz/vim-grepper'
-Plug 'moll/vim-bbye'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'plasticboy/vim-markdown'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree'
 Plug 'tomasiser/vim-code-dark'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'w0rp/ale'
-Plug 'zchee/deoplete-go', { 'do': 'make'}
+
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+Plug 'jparise/vim-graphql'
+
 call plug#end()
+
+let g:coc_global_extensions = [
+  \ 'coc-tsserver'
+  \ ]
+
+
 
 set nocompatible              " be iMproved, required
 filetype off                  " required
@@ -545,22 +555,6 @@ let g:vim_json_syntax_conceal = 0
 " ==================== vim-bbye ====================
 :nnoremap <Leader>q :Bdelete<CR>
 
-" ==================== Completion =========================
-" use deoplete for Neovim or vim 8.1+.
-if has('nvim') || (v:version > 810)
-  let g:deoplete#enable_at_startup = 1
-  let g:deoplete#ignore_sources = {}
-  let g:deoplete#ignore_sources._ = ['buffer', 'member', 'tag', 'file', 'neosnippet']
-  let g:deoplete#sources#go#sort_class = ['func', 'type', 'var', 'const']
-  let g:deoplete#sources#go#align_class = 1
-
-
-  " Use partial fuzzy matches like YouCompleteMe
-  call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy'])
-  call deoplete#custom#source('_', 'converters', ['converter_remove_paren'])
-  call deoplete#custom#source('_', 'disabled_syntaxes', ['Comment', 'String'])
-endif
-
 " ==================== vim-multiple-cursors ====================
 let g:multi_cursor_use_default_mapping=0
 let g:multi_cursor_next_key='<C-i>'
@@ -596,3 +590,23 @@ let g:ale_lint_on_enter = 'always'
 " tagbar
 nmap <leader>tt :TagbarOpenAutoClose<cr>
 imap <leader>tt <esc>:TagbarOpenAutoClose<cr>
+
+" Automatic reloading of .vimrc
+autocmd! bufwritepost .vimrc source %
+autocmd! bufwritepost vimrc source %
+
+nnoremap <C-p> :GFiles<CR>
+nnoremap <C-f> :Rg<CR>
+
+
+"""
+""" Javascript
+"""
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
+  let g:coc_global_extensions += ['coc-prettier']
+endif
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
+  let g:coc_global_extensions += ['coc-eslint']
+endif
