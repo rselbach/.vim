@@ -16,7 +16,6 @@ Plug 'xolox/vim-misc'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() }}
 Plug 'junegunn/fzf.vim'
-
 Plug 'airblade/vim-gitgutter'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'plasticboy/vim-markdown'
@@ -24,13 +23,13 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jparise/vim-graphql'
-
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 let g:coc_global_extensions = [
@@ -378,6 +377,17 @@ au FileType nginx setlocal noet ts=4 sw=4 sts=4
 au BufNewFile,BufRead *.go setlocal noet ts=4 sw=4 sts=4
 " autocmd BufEnter *.go colorscheme nofrils-dark
 
+""" Javascript
+autocmd BufNewFile,BufRead *.js,*.tsx,*.jsx  setlocal noet ts=2 sw=2 sts=2
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
+  let g:coc_global_extensions += ['coc-prettier']
+endif
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
+  let g:coc_global_extensions += ['coc-eslint']
+endif
+
 " scala settings
 autocmd BufNewFile,BufReadPost *.scala setl shiftwidth=2 expandtab
 
@@ -431,36 +441,13 @@ set wildignore+=*.orig                           " Merge resolution files
 " Plugin configs 			    			"
 " ----------------------------------------- "
 
-" ==================== CtrlP ====================
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_max_height = 10		" maxiumum height of match window
-let g:ctrlp_switch_buffer = 'et'	" jump to a file if it's open already
-let g:ctrlp_mruf_max=450 		" number of recently opened files
-let g:ctrlp_max_files=0  		" do not limit the number of searchable files
-let g:ctrlp_use_caching = 1
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
+" ==================== FZF ====================
 
-let g:ctrlp_buftag_types = {'go' : '--language-force=go --golang-types=ftv'}
+" use GFiles when possible otherwise fallback to Files
+nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles')."\<cr>"
+nnoremap <C-b> :Buffers<CR>
+nnoremap <C-f> :Rg<CR>
 
-func! MyCtrlPTag()
-  let g:ctrlp_prompt_mappings = {
-        \ 'AcceptSelection("e")': ['<cr>', '<2-LeftMouse>'],
-        \ 'AcceptSelection("t")': ['<c-t>'],
-        \ }
-  CtrlPBufTag
-endfunc
-command! MyCtrlPTag call MyCtrlPTag()
-
-nmap <C-g> :CtrlPBufTag<cr>
-imap <C-g> <esc>:CtrlPBufTag<cr>
-
-"nmap <C-g> :MyCtrlPTag<cr>
-"imap <C-g> <esc>:MyCtrlPTag<cr>
-
-nmap <C-b> :CtrlPBuffer<cr>
-imap <C-b> <esc>:CtrlPBuffer<cr>
 
 " ==================== Fugitive ====================
 nnoremap <leader>ga :Git add %:p<CR><CR>
@@ -555,6 +542,12 @@ let g:vim_json_syntax_conceal = 0
 " ==================== vim-bbye ====================
 :nnoremap <Leader>q :Bdelete<CR>
 
+" ==================== CoC ====================
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
 " ==================== vim-multiple-cursors ====================
 let g:multi_cursor_use_default_mapping=0
 let g:multi_cursor_next_key='<C-i>'
@@ -595,18 +588,5 @@ imap <leader>tt <esc>:TagbarOpenAutoClose<cr>
 autocmd! bufwritepost .vimrc source %
 autocmd! bufwritepost vimrc source %
 
-nnoremap <C-p> :GFiles<CR>
-nnoremap <C-f> :Rg<CR>
 
 
-"""
-""" Javascript
-"""
-
-if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
-  let g:coc_global_extensions += ['coc-prettier']
-endif
-
-if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
-  let g:coc_global_extensions += ['coc-eslint']
-endif
