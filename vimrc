@@ -14,22 +14,24 @@ Plug 'Lokaltog/vim-powerline'
 Plug 'xolox/vim-notes'
 Plug 'xolox/vim-misc'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() }}
-Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'plasticboy/vim-markdown'
-Plug 'tomasiser/vim-code-dark'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jparise/vim-graphql'
+
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+
+" Color themes
+Plug 'tomasiser/vim-code-dark'
 call plug#end()
 
 let g:coc_global_extensions = [
@@ -416,6 +418,10 @@ au BufRead,BufNewFile MAINTAINERS set ft=toml
 " spell check for git commits
 autocmd FileType gitcommit setlocal spell
 
+" YAML setttings
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+
 " Wildmenu completion {{{
 set wildmenu
 " set wildmode=list:longest
@@ -589,4 +595,13 @@ autocmd! bufwritepost .vimrc source %
 autocmd! bufwritepost vimrc source %
 
 
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
 
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
