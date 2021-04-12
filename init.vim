@@ -30,6 +30,11 @@ Plug 'jparise/vim-graphql'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
+Plug 'airblade/vim-rooter'
+
+" for better search
+Plug 'jesseleite/vim-agriculture'
+
 " Color themes
 Plug 'tomasiser/vim-code-dark'
 call plug#end()
@@ -452,6 +457,16 @@ set wildignore+=*.orig                           " Merge resolution files
 " use GFiles when possible otherwise fallback to Files
 nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles')."\<cr>"
 nnoremap <C-b> :Buffers<CR>
+
+" set autochdir and disable auto-vim-rooter
+let g:rooter_cd_command = "lcd"
+let g:rooter_manual_only = 1
+set autochdir
+
+" define a command which runs ripgrep in the root directory
+" as determined by rooter
+command!      -bang -nargs=* Rg                        call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case " . shellescape(<q-args>), 1, {"dir": FindRootDirectory()})
+
 nnoremap <C-f> :Rg<CR>
 
 
