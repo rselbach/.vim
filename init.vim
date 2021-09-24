@@ -27,6 +27,8 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jparise/vim-graphql'
 
+Plug 'tpope/vim-commentary'
+
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
@@ -454,13 +456,23 @@ set wildignore+=*.orig                           " Merge resolution files
 
 " ==================== FZF ====================
 
+function! s:find_git_root()
+  return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+endfunction
+
+command! ProjectFiles execute 'Files' FindRootDirectory()
+" s:find_git_root()
+
 " use GFiles when possible otherwise fallback to Files
-nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles')."\<cr>"
+"nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles')."\<cr>"
+nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':ProjectFiles')."\<cr>"
+
 nnoremap <C-b> :Buffers<CR>
 
 " set autochdir and disable auto-vim-rooter
 let g:rooter_cd_command = "lcd"
 let g:rooter_manual_only = 1
+let g:rooter_patterns = ['.git', '>hashicorp', '>devel']
 set autochdir
 
 " define a command which runs ripgrep in the root directory
@@ -484,7 +496,7 @@ let g:cfmt_style = '-linux'
 "let g:linuxsty_patterns = ['/usr/src/', '/linux']
 
 " ==================== Vim-go ====================
-let g:go_auto_type_info=0
+let g:go_auto_type_info=1
 let g:go_fmt_fail_silently = 0
 let g:go_fmt_command = "goimports"
 let g:go_autodetect_gopath = 1
