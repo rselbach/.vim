@@ -39,6 +39,10 @@ Plug 'jesseleite/vim-agriculture'
 
 " Color themes
 Plug 'tomasiser/vim-code-dark'
+
+" Change structs to multiline and back
+Plug 'AndrewRadev/splitjoin.vim'
+
 call plug#end()
 
 let g:coc_global_extensions = [
