@@ -460,6 +460,8 @@ set wildignore+=*.orig                           " Merge resolution files
 
 " ==================== FZF ====================
 
+let $FZF_DEFAULT_COMMAND='rg --hidden -l ""'
+
 function! s:find_git_root()
   return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
 endfunction
@@ -636,3 +638,6 @@ inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
+
+noremap <C-k> D
+inoremap <C-k> <C-o>D
