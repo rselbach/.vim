@@ -16,6 +16,7 @@ Plug 'xolox/vim-misc'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'airblade/vim-gitgutter'
 Plug 'ntpeters/vim-better-whitespace'
+Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
@@ -38,7 +39,7 @@ Plug 'airblade/vim-rooter'
 Plug 'jesseleite/vim-agriculture'
 
 " Color themes
-Plug 'tomasiser/vim-code-dark'
+Plug 'sainnhe/everforest'
 
 " Change structs to multiline and back
 Plug 'AndrewRadev/splitjoin.vim'
@@ -48,7 +49,6 @@ call plug#end()
 let g:coc_global_extensions = [
   \ 'coc-tsserver'
   \ ]
-
 
 
 set nocompatible              " be iMproved, required
@@ -227,7 +227,7 @@ if has('gui_running')
   syntax enable
 endif
 set background=dark
-colorscheme codedark
+colorscheme everforest
 set guifont="Fira Code:h15"
 set guioptions-=L
 
